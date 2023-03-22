@@ -8,7 +8,7 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV "/home/giosef/sudoku_genetic/sudoku_genetic-master/sudoku-genetic-algorithm-master"
+setenv VIRTUAL_ENV "/home/giosef/sudoku-new"
 
 set _OLD_VIRTUAL_PATH="$PATH"
 setenv PATH "$VIRTUAL_ENV/bin:$PATH"
@@ -17,8 +17,8 @@ setenv PATH "$VIRTUAL_ENV/bin:$PATH"
 set _OLD_VIRTUAL_PROMPT="$prompt"
 
 if (! "$?VIRTUAL_ENV_DISABLE_PROMPT") then
-    if ("sudoku-genetic-algorithm-master" != "") then
-        set env_name = "sudoku-genetic-algorithm-master"
+    if ("sudoku-new" != "") then
+        set env_name = "sudoku-new"
     else
         if (`basename "VIRTUAL_ENV"` == "__") then
             # special case for Aspen magic directories

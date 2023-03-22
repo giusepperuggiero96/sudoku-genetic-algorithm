@@ -12,8 +12,15 @@ Andiamo ora ad evidenziare delle specificità del problema del sudoku rispetto a
 
 ## Esecuzione
 
-Per eseguire questo programma bisogna temporaneamente eseguire il comando `python sudoku_generator.py` seguito da `python sudoku.py`
+Per eseguire questo programma bisogna eseguire il comando `python3 sudoku_generator.py`
+E' consigliato eseguirlo in un python venv come di seguito
+```
+python3 -m venv .
+source ./bin/activate
+pip install numpy
+python3 sudoku_generator.py
+```
 
 ## Requisiti
 
-pyhton 2.7
+python 3.7+

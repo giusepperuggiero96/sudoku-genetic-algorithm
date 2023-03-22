@@ -42,7 +42,7 @@ class Sudoku(object):
         self.population = Population()
         self.population.seed(Nc, self.given)
     
-        # For up to 10000 generations...
+        # For up to 1000 generations...
         stale = 0
         for generation in range(0, Ng):
         
