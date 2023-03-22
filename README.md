@@ -23,5 +23,5 @@ python3 sudoku_generator.py
 
 ## Requisiti
 
-python 3.7+
+python 3.7+</br>
 numpy
