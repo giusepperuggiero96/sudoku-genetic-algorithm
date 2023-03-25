@@ -3,31 +3,31 @@ from class_Candidate import *
 import numpy
 import random
 
-Nd = 9 # Number of digits (in the case of standard Sudoku puzzles, this is 9).
+Nd = 9 # Numero di celle (nel caso del sudoku standard sono 9)
 
 class Given(Candidate):
-    """ The grid containing the given/known values. """
+    """ Classe figlia della classe Candidate, modella lo schema di partenza """
 
     def __init__(self, values):
         self.values = values
         return
         
     def is_row_duplicate(self, row, value):
-        """ Check whether there is a duplicate of a fixed/given value in a row. """
+        """ Controlla se un valore è duplicato di riga """
         for column in range(0, Nd):
             if(self.values[row][column] == value):
                return True
         return False
 
     def is_column_duplicate(self, column, value):
-        """ Check whether there is a duplicate of a fixed/given value in a column. """
+        """ Controlla se un valore è un duplicato di colonna """
         for row in range(0, Nd):
             if(self.values[row][column] == value):
                return True
         return False
 
     def is_block_duplicate(self, row, column, value):
-        """ Check whether there is a duplicate of a fixed/given value in a 3 x 3 block. """
+        """ Controlla se un valore è un duplicato di blocco """
         i = 3*(int(row/3))
         j = 3*(int(column/3))
 

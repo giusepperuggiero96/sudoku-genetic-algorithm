@@ -2,30 +2,30 @@ from class_Candidate import *
 import numpy
 import random
 
-Nd = 9 # Number of digits (in the case of standard Sudoku puzzles, this is 9).
+Nd = 9 # Numero di celle (nel caso del sudoku standard sono 9)
 
 class CycleCrossover(object):
-    """ Crossover relates to the analogy of genes within each parent candidate mixing together in the hopes of creating a fitter child candidate. Cycle crossover is used here (see e.g. A. E. Eiben, J. E. Smith. Introduction to Evolutionary Computing. Springer, 2007). """
+    """ Il crossover modella l'analogia del mixing dei geni tra i candidati genitori al fine di creare un candidato figlio a fitness più elevata. Qui usiamo il cyclecrossover ( A. E. Eiben, J. E. Smith. Introduction to Evolutionary Computing. Springer, 2007) """
 
     def __init__(self):
         return
     
     def crossover(self, parent1, parent2, crossover_rate):
-        """ Create two new child candidates by crossing over parent genes. """
+        """ Crea due candidati figli a partire dai genitori """
         child1 = Candidate()
         child2 = Candidate()
         
-        # Make a copy of the parent genes.
+        # Inizializza i figli con i geni dei genitori
         child1.values = numpy.copy(parent1.values)
         child2.values = numpy.copy(parent2.values)
 
         r = random.uniform(0, 1.1)
-        while(r > 1):  # Outside [0, 1] boundary. Choose another.
+        while(r > 1):
             r = random.uniform(0, 1.1)
             
-        # Perform crossover.
+        # Effettua il crossover (il parametro crossover_rate è sempre 1 in questa implementazione)
         if (r < crossover_rate):
-            # Pick a crossover point. Crossover must have at least 1 row (and at most Nd-1) rows.
+            # Sceglie casualmente due punti di crossover
             crossover_point1 = random.randint(0, 8)
             crossover_point2 = random.randint(1, 9)
             while(crossover_point1 == crossover_point2):
@@ -37,6 +37,7 @@ class CycleCrossover(object):
                 crossover_point1 = crossover_point2
                 crossover_point2 = temp
                 
+            # Effettua il crossover delle righe nel range tra i due punti
             for i in range(crossover_point1, crossover_point2):
                 child1.values[i], child2.values[i] = self.crossover_rows(child1.values[i], child2.values[i])
 
@@ -49,9 +50,9 @@ class CycleCrossover(object):
         remaining = list(range(1, Nd+1))
         cycle = 0
         
-        while((0 in child_row1) and (0 in child_row2)):  # While child rows not complete...
-            if(cycle % 2 == 0):  # Even cycles.
-                # Assign next unused value.
+        while((0 in child_row1) and (0 in child_row2)):  # Fintantochè rimangono spazi vuoti nelle righe
+            if(cycle % 2 == 0):  # Cicli pari
+                # Assegna il valore vuoto successivo
                 index = self.find_unused(row1, remaining)
                 start = row1[index]
                 remaining.remove(row1[index])
@@ -59,7 +60,7 @@ class CycleCrossover(object):
                 child_row2[index] = row2[index]
                 next = row2[index]
                 
-                while(next != start):  # While cycle not done...
+                while(next != start):  # Fintantochè non termina
                     index = self.find_value(row1, next)
                     child_row1[index] = row1[index]
                     remaining.remove(row1[index])
@@ -68,7 +69,7 @@ class CycleCrossover(object):
 
                 cycle += 1
 
-            else:  # Odd cycle - flip values.
+            else:  # Ciclo dispari - scambia i valori
                 index = self.find_unused(row1, remaining)
                 start = row1[index]
                 remaining.remove(row1[index])
@@ -76,7 +77,7 @@ class CycleCrossover(object):
                 child_row2[index] = row1[index]
                 next = row2[index]
                 
-                while(next != start):  # While cycle not done...
+                while(next != start):  # Fintantochè non termina
                     index = self.find_value(row1, next)
                     child_row1[index] = row2[index]
                     remaining.remove(row1[index])

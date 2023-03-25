@@ -4,10 +4,10 @@ from class_Given import *
 from class_Tournament import *
 from class_CycleCrossover import *
 from class_Sudoku import *
-from sudoku_generator import *
+import sudoku_generator
 
 
-#CreateGrid()
+sudoku_generator.createGrid()
 print("\nRisolvo la griglia appena creata..\n")
 import numpy
 import random

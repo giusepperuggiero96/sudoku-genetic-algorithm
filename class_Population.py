@@ -4,10 +4,10 @@ import numpy
 import random
 from functools import cmp_to_key
 
-Nd = 9 # Number of digits (in the case of standard Sudoku puzzles, this is 9).
+Nd = 9 # Numero di celle (nel caso del sudoku standard sono 9)
 
 class Population(object):
-    """ A set of candidate solutions to the Sudoku puzzle. These candidates are also known as the chromosomes in the population. """
+    """ Un insieme di soluzioni candidate per il sudoku. Queste soluzioni candidtato sono anche dette i "cromosomi" della popolazione """
 
     def __init__(self):
         self.candidates = []
@@ -16,37 +16,38 @@ class Population(object):
     def seed(self, Nc, given):
         self.candidates = []
         
-        # Determine the legal values that each square can take.
+        # Determina i valori legali che ciascuna casella vuota dello schema di partenza può contenere
         helper = Candidate()
         helper.values = [[[] for j in range(0, Nd)] for i in range(0, Nd)]
         for row in range(0, Nd):
             for column in range(0, Nd):
                 for value in range(1, 10):
                     if((given.values[row][column] == 0) and not (given.is_column_duplicate(column, value) or given.is_block_duplicate(row, column, value) or given.is_row_duplicate(row, value))):
-                        # Value is available.
+                        # Se la casella è vuota e la cifra non è duplicato nè di colonna, nè di riga, nè di blocco, allora è la cifra è un valore legale
                         helper.values[row][column].append(value)
                     elif(given.values[row][column] != 0):
-                        # Given/known value from file.
+                        # Se la casella non è vuota 
                         helper.values[row][column].append(given.values[row][column])
                         break
 
-        # Seed a new population.       
+        # Crea una nuova popolazione 
         for p in range(0, Nc):
+            # Per ogni iterazione crea una soluzione candidata inizialmente vuota
             g = Candidate()
-            for i in range(0, Nd): # New row in candidate.
+            for i in range(0, Nd): # Per ogni riga
                 row = numpy.zeros(Nd)
                 
-                # Fill in the givens.
-                for j in range(0, Nd): # New column j value in row i.
+                # Riempie la soluzione candidata
+                for j in range(0, Nd): # per ogni colonna
                 
-                    # If value is already given, don't change it.
+                    # Se la casella della soluzione iniziale non è vuota la inserisco as-is
                     if(given.values[i][j] != 0):
                         row[j] = given.values[i][j]
-                    # Fill in the gaps using the helper board.
+                    # Altrimenti inserisco un valore casuale tra quelli legali che ho immagazzinato nella variabile helper
                     elif(given.values[i][j] == 0):
                         row[j] = helper.values[i][j][random.randint(0, len(helper.values[i][j])-1)]
 
-                # If we don't have a valid board, then try again. There must be no duplicates in the row.
+                # Ritenta l'inserimento finchè la riga non è valida e quindi non contiene duplicati
                 while(len(list(set(row))) != Nd):
                     for j in range(0, Nd):
                         if(given.values[i][j] == 0):
@@ -56,7 +57,7 @@ class Population(object):
 
             self.candidates.append(g)
         
-        # Compute the fitness of all candidates in the population.
+        # Calcola la fitness di tutti i candidati nella popolazione
         self.update_fitness()
         
         print("Seeding complete.")
@@ -64,22 +65,12 @@ class Population(object):
         return
         
     def update_fitness(self):
-        """ Update fitness of every candidate/chromosome. """
+        """ Ricalcola la fitness di tutti i candidati nella popolazione """
         for candidate in self.candidates:
             candidate.update_fitness()
         return
         
     def sort(self):
-        """ Sort the population based on fitness. """
+        """ Ordina la popolazione sulla base della fitness """
         self.candidates = sorted(self.candidates, key=lambda x: x.fitness)
         return
-
-    # Obsoleta
-    def sort_fitness(self, x, y):
-        """ The sorting function. """
-        if(x.fitness < y.fitness):
-            return 1
-        elif(x.fitness == y.fitness):
-            return 0
-        else:
-            return -1
