@@ -51,6 +51,11 @@ class CycleCrossover(object):
         cycle = 0
         
         while((0 in child_row1) and (0 in child_row2)):  # Fintantochè rimangono spazi vuoti nelle righe
+            # Il CycleCrossover crea dei cosiddetti "cicli". Nelle posizioni contenute nei cicli di numero pari (si parte dal ciclo 0) i valori della riga genitore 1 andranno 
+            # nei corrispondenti posti nella riga del figlio 1 e viceversa con la riga del genitore 2 e figlio.
+            # Nei cicli invece di numero dispari questa corrispondenza si inverte e i valori delle posizioni che determinano il ciclo passeranno dal genitore 1 al figlio 2
+            # e viceversa dal genotore 2 al figlio 1
+            # In letteratura si è visto che questo tipo di implementazione dell'operatore crossover produce buoni risultati.
             if(cycle % 2 == 0):  # Cicli pari
                 # Assegna il valore vuoto successivo
                 index = self.find_unused(row1, remaining)
